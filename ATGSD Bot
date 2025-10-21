@@ -13,8 +13,8 @@ CHANNEL_ID = 1430221035151560774     # replace with your #daily-muster channel I
 TZ = ZoneInfo("America/Los_Angeles")
 
 # TEST SCHEDULE (for quick verification)
-POST_TIME   = (10, 30)   # 1030 PST - post muster
-REPORT_TIME = (10, 35)   # 1035 PST - post summary
+POST_TIME   = (10, 36)   # 1030 PST - post muster
+REPORT_TIME = (10, 37)   # 1035 PST - post summary
 RESET_TIME  = (10, 40)   # 1040 PST - reset & TORIS message
 
 STATE_FILE = "muster_state.json"
@@ -107,24 +107,3 @@ async def reset_and_toris():
 
     # Reset data
     state["mustered"] = []
-    state["last_post"] = None
-    save_state()
-
-    print(f"[{today}] Reset complete @ 1040 PST")
-
-# ===== Reaction Event =====
-@bot.event
-async def on_reaction_add(reaction, user):
-    if user.bot:
-        return
-    if reaction.emoji == "👍" and reaction.message.id == state.get("last_post"):
-        if user.id not in state["mustered"]:
-            state["mustered"].append(user.id)
-            save_state()
-            print(f"{user.name} mustered 👍")
-
-            # Post the name of the person who mustered
-            channel = bot.get_channel(CHANNEL_ID)
-            await channel.send(f"{user.name} has mustered! 👍")
-
-bot.run(TOKEN)
