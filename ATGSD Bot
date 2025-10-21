@@ -4,17 +4,18 @@ import datetime
 from zoneinfo import ZoneInfo
 import json
 import os
+import sys
 
 # ===== CONFIG =====
 TOKEN = os.getenv("DISCORD_TOKEN")  # pulled from Render env var
-GUILD_ID = 1430220748269682720      # your server ID
-CHANNEL_ID = 1430221035151560774    # your #daily-muster channel ID
+GUILD_ID = 1430220748269682720       # replace with your server ID
+CHANNEL_ID = 1430221035151560774     # replace with your #daily-muster channel ID
 TZ = ZoneInfo("America/Los_Angeles")
 
 # TEST SCHEDULE (for quick verification)
-POST_TIME   = (10, 10)   # 1005 PST - post muster
-REPORT_TIME = (10, 15)   # 1010 PST - post summary
-RESET_TIME  = (10, 20)   # 1015 PST - reset & TORIS messagegee
+POST_TIME   = (10, 30)   # 1030 PST - post muster
+REPORT_TIME = (10, 35)   # 1035 PST - post summary
+RESET_TIME  = (10, 40)   # 1040 PST - reset & TORIS message
 
 STATE_FILE = "muster_state.json"
 
@@ -46,6 +47,7 @@ async def on_ready():
 async def scheduler():
     now = datetime.datetime.now(TZ)
     hm = (now.hour, now.minute)
+    print(f"⏱ Checking time: {hm}")
 
     if hm == POST_TIME:
         await post_muster()
@@ -62,7 +64,7 @@ async def post_muster():
     msg = await channel.send(
         f"⚓ **Daily Muster — {today}**\n"
         f"✅ React below to mark yourself present.\n"
-        f"🕔 Muster window: **0940–0945 PST (Test Run)**"
+        f"🕔 Muster window: **1030 PST – 1040 PST (Test Run)**"
     )
     await msg.add_reaction("✅")
 
@@ -71,7 +73,7 @@ async def post_muster():
     state["last_post_date"] = today
     save_state()
 
-    print(f"[{today}] Muster posted @ 0940 PST")
+    print(f"[{today}] Muster posted @ 1030 PST")
 
 # ===== Post the Daily Report =====
 async def post_report():
@@ -91,7 +93,7 @@ async def post_report():
         f"❌ **Not Mustered:** {', '.join(missing) if missing else 'All accounted for!'}"
     )
     await channel.send(report)
-    print(f"[{today}] Report posted @ 0942 PST")
+    print(f"[{today}] Report posted @ 1035 PST")
 
 # ===== Reset & TORIS Message =====
 async def reset_and_toris():
@@ -99,7 +101,7 @@ async def reset_and_toris():
     today = datetime.datetime.now(TZ).strftime("%d %b %Y")
 
     await channel.send(
-        f"🕘 **{today} 0945 PST:** Late will be taking muster in TORIS the next day "
+        f"🕘 **{today} 1040 PST:** Late will be taking muster in TORIS the next day "
         f"or the next available days."
     )
 
@@ -108,7 +110,7 @@ async def reset_and_toris():
     state["last_post"] = None
     save_state()
 
-    print(f"[{today}] Reset complete @ 0945 PST")
+    print(f"[{today}] Reset complete @ 1040 PST")
 
 # ===== Reaction Event =====
 @bot.event
@@ -120,5 +122,9 @@ async def on_reaction_add(reaction, user):
             state["mustered"].append(user.id)
             save_state()
             print(f"{user.name} mustered ✅")
+
+            # Post the name of the person who mustered
+            channel = bot.get_channel(CHANNEL_ID)
+            await channel.send(f"{user.name} has mustered! ✅")
 
 bot.run(TOKEN)
