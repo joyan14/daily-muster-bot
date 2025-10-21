@@ -13,9 +13,9 @@ CHANNEL_ID = 1430221035151560774     # replace with your #daily-muster channel I
 TZ = ZoneInfo("America/Los_Angeles")
 
 # TEST SCHEDULE (for quick verification)
-POST_TIME   = (10, 36)   # 1030 PST - post muster
-REPORT_TIME = (10, 37)   # 1035 PST - post summary
-RESET_TIME  = (10, 40)   # 1040 PST - reset & TORIS message
+POST_TIME   = (11, 15)   # 1030 PST - post muster
+REPORT_TIME = (11, 20)   # 1035 PST - post summary
+RESET_TIME  = (11, 25)   # 1040 PST - reset & TORIS message
 
 STATE_FILE = "muster_state.json"
 
