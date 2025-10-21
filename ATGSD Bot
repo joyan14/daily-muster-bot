@@ -93,7 +93,7 @@ async def post_report():
         f"❌ **Not Mustered:** {', '.join(missing) if missing else 'All accounted for!'}"
     )
     await channel.send(report)
-    print(f"[{today}] Report posted @ 1035 PST")
+    print(f"[{today}] Report posted @ 1205 PST")
 
 # ===== Reset & TORIS Message =====
 async def reset_and_toris():
@@ -101,7 +101,7 @@ async def reset_and_toris():
     today = datetime.datetime.now(TZ).strftime("%d %b %Y")
 
     await channel.send(
-        f"🕘 **{today} 1040 PST:** Late will be taking muster in TORIS the next day "
+        f"🕘 **{today} 1205 PST:** Late will be taking muster in TORIS the next day "
         f"or the next available days."
     )
 
