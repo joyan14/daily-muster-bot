@@ -63,10 +63,10 @@ async def post_muster():
 
     msg = await channel.send(
         f"⚓ **Daily Muster — {today}**\n"
-        f"✅ React below to mark yourself present.\n"
+        f"👍 React below to mark yourself present.\n"
         f"🕔 Muster window: **1030 PST – 1040 PST (Test Run)**"
     )
-    await msg.add_reaction("✅")
+    await msg.add_reaction("👍")
 
     state["mustered"] = []
     state["last_post"] = msg.id
@@ -117,14 +117,14 @@ async def reset_and_toris():
 async def on_reaction_add(reaction, user):
     if user.bot:
         return
-    if reaction.emoji == "✅" and reaction.message.id == state.get("last_post"):
+    if reaction.emoji == "👍" and reaction.message.id == state.get("last_post"):
         if user.id not in state["mustered"]:
             state["mustered"].append(user.id)
             save_state()
-            print(f"{user.name} mustered ✅")
+            print(f"{user.name} mustered 👍")
 
             # Post the name of the person who mustered
             channel = bot.get_channel(CHANNEL_ID)
-            await channel.send(f"{user.name} has mustered! ✅")
+            await channel.send(f"{user.name} has mustered! 👍")
 
 bot.run(TOKEN)
