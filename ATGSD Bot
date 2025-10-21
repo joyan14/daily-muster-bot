@@ -14,7 +14,7 @@ TZ = ZoneInfo("America/Los_Angeles")
 
 # TEST SCHEDULE (for quick verification)
 POST_TIME   = (12, 00)   # 1200 PST - post muster
-REPORT_TIME = (12, 05)   # 1205 PST - post summary
+REPORT_TIME = (12, 5)   # 1205 PST - post summary
 RESET_TIME  = (12, 10)   # 1210 PST - reset & TORIS message
 
 STATE_FILE = "muster_state.json"
